@@ -15,70 +15,8 @@ This repository contains comprehensive implementations of four fundamental compu
 | [ORB](#orb) | 2011 | 256-bit | FAST corners + rotated BRIEF | ~100× faster |
 | [HOG](#hog) | 2005 | 167,796-D | Dense gradient histograms | N/A (dense) |
 
----
 
-## Project Structure
 
-```
-AlgoImplementation/
-├── README.md                    ← This file
-├── 01_sift/
-│   ├── README.md                ← Detailed SIFT documentation
-│   ├── SIFT_Algorithm.ipynb     ← Interactive notebook
-│   ├── code/                    ← Python implementations
-│   │   ├── sift_pipeline.py     ← Main pipeline
-│   │   └── ...                  ← Step-by-step scripts
-│   └── images/                  ← Generated visualizations
-├── 02_surf/
-│   ├── README.md                ← Detailed SURF documentation
-│   ├── SURF_Algorithm.ipynb     ← Interactive notebook
-│   ├── code/                    ← Python implementations
-│   │   ├── surf_pipeline.py     ← Main pipeline
-│   │   └── ...                  ← Step-by-step scripts
-│   └── images/                  ← Generated visualizations
-├── 03_orb/
-│   ├── README.md                ← Detailed ORB documentation
-│   ├── ORB_Algorithm.ipynb      ← Interactive notebook
-│   ├── code/                    ← Python implementations
-│   │   ├── orb_pipeline.py      ← Main pipeline
-│   │   └── ...                  ← Step-by-step scripts
-│   └── images/                  ← Generated visualizations
-└── 04_hog/
-    ├── README.md                ← Detailed HOG documentation
-    ├── HOG_Algorithm.ipynb      ← Interactive notebook
-    ├── code/                    ← Python implementations
-    │   ├── hog_pipeline.py      ← Main pipeline
-    │   └── ...                  ← Step-by-step scripts
-    └── images/                  ← Generated visualizations
-```
-
----
-
-## Quick Start
-
-### Prerequisites
-
-```bash
-pip install numpy scipy matplotlib pillow
-```
-
-### Running the Pipelines
-
-```bash
-# SIFT - Scale-Invariant Feature Transform
-python 01_sift/code/sift_pipeline.py
-
-# SURF - Speeded-Up Robust Features
-python 02_surf/code/surf_pipeline.py
-
-# ORB - Oriented FAST and Rotated BRIEF
-python 03_orb/code/orb_pipeline.py
-
-# HOG - Histogram of Oriented Gradients
-python 04_hog/code/hog_pipeline.py
-```
-
----
 
 ## Algorithm Summaries
 
