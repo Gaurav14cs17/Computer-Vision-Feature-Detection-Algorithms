@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="950" height="550" viewBox="0 0 950 550">
+  <!-- Dark Background -->
+  <rect width="950" height="550" fill="#1a1a1a"/>
+  
+  <!-- Title -->
+  <text x="475" y="35" fill="#00bfff" font-family="Arial" font-size="26" font-weight="bold" text-anchor="middle">ORB Pipeline Overview</text>
+  <text x="475" y="58" fill="#888" font-family="Arial" font-size="12" text-anchor="middle">Oriented FAST and Rotated BRIEF - 10x Faster, Patent-Free, Binary Descriptors</text>
+  
+  <!-- Step 1: Pyramid -->
+  <g transform="translate(30, 90)">
+    <rect x="0" y="0" width="180" height="120" fill="#222" stroke="#00bfff" stroke-width="2" rx="8"/>
+    <text x="90" y="25" fill="#00bfff" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle">Step 1: Scale Pyramid</text>
+    <!-- Pyramid levels -->
+    <rect x="30" y="40" width="120" height="20" fill="#00bfff" opacity="0.5" stroke="#00bfff" rx="2"/>
+    <rect x="45" y="55" width="90" height="17" fill="#00bfff" opacity="0.4" stroke="#00bfff" rx="2"/>
+    <rect x="55" y="67" width="70" height="14" fill="#00bfff" opacity="0.3" stroke="#00bfff" rx="2"/>
+    <rect x="62" y="77" width="56" height="11" fill="#00bfff" opacity="0.2" stroke="#00bfff" rx="2"/>
+    <text x="90" y="110" fill="#888" font-family="Arial" font-size="9" text-anchor="middle">8 levels, factor 1.2</text>
+  </g>
+  
+  <!-- Arrow -->
+  <g transform="translate(215, 145)">
+    <line x1="0" y1="0" x2="30" y2="0" stroke="#fff" stroke-width="2"/>
+    <polygon points="35,0 28,-5 28,5" fill="#fff"/>
+  </g>
+  
+  <!-- Step 2: FAST -->
+  <g transform="translate(255, 90)">
+    <rect x="0" y="0" width="180" height="120" fill="#222" stroke="#e74c3c" stroke-width="2" rx="8"/>
+    <text x="90" y="25" fill="#e74c3c" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle">Step 2: FAST Corners</text>
+    <!-- FAST circle -->
+    <circle cx="90" cy="70" r="30" fill="none" stroke="#e74c3c" stroke-width="2"/>
+    <circle cx="90" cy="70" r="4" fill="#e74c3c"/>
+    <!-- 16 points around -->
+    <circle cx="90" cy="40" r="3" fill="#2ecc71"/>
+    <circle cx="105" cy="43" r="3" fill="#2ecc71"/>
+    <circle cx="116" cy="55" r="3" fill="#2ecc71"/>
+    <circle cx="120" cy="70" r="3" fill="#666"/>
+    <circle cx="116" cy="85" r="3" fill="#666"/>
+    <circle cx="105" cy="97" r="3" fill="#666"/>
+    <circle cx="90" cy="100" r="3" fill="#666"/>
+    <circle cx="75" cy="97" r="3" fill="#666"/>
+    <circle cx="64" cy="85" r="3" fill="#666"/>
+    <circle cx="60" cy="70" r="3" fill="#666"/>
+    <circle cx="64" cy="55" r="3" fill="#2ecc71"/>
+    <circle cx="75" cy="43" r="3" fill="#2ecc71"/>
+    <text x="90" y="115" fill="#888" font-family="Arial" font-size="9" text-anchor="middle">9+ contiguous B or D</text>
+  </g>
+  
+  <!-- Arrow -->
+  <g transform="translate(440, 145)">
+    <line x1="0" y1="0" x2="30" y2="0" stroke="#fff" stroke-width="2"/>
+    <polygon points="35,0 28,-5 28,5" fill="#fff"/>
+  </g>
+  
+  <!-- Step 3: Harris -->
+  <g transform="translate(480, 90)">
+    <rect x="0" y="0" width="180" height="120" fill="#222" stroke="#9b59b6" stroke-width="2" rx="8"/>
+    <text x="90" y="25" fill="#9b59b6" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle">Step 3: Harris Filter</text>
+    <rect x="15" y="40" width="150" height="50" fill="#2a2a2a" stroke="#444" rx="3"/>
+    <text x="90" y="55" fill="#e74c3c" font-family="Arial" font-size="9">~10,000 FAST corners</text>
+    <text x="90" y="70" fill="#fff" font-family="Arial" font-size="14">-></text>
+    <text x="90" y="85" fill="#2ecc71" font-family="Arial" font-size="9">Top 500 by Harris R</text>
+    <text x="90" y="110" fill="#888" font-family="Arial" font-size="9" text-anchor="middle">R = det(M) - k*trace(M)^2</text>
+  </g>
+  
+  <!-- Arrow -->
+  <g transform="translate(665, 145)">
+    <line x1="0" y1="0" x2="30" y2="0" stroke="#fff" stroke-width="2"/>
+    <polygon points="35,0 28,-5 28,5" fill="#fff"/>
+  </g>
+  
+  <!-- Step 4: Orientation -->
+  <g transform="translate(705, 90)">
+    <rect x="0" y="0" width="180" height="120" fill="#222" stroke="#f39c12" stroke-width="2" rx="8"/>
+    <text x="90" y="25" fill="#f39c12" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle">Step 4: Orientation</text>
+    <circle cx="90" cy="70" r="30" fill="#2a2a2a" stroke="#f39c12" stroke-width="2"/>
+    <circle cx="90" cy="70" r="4" fill="#f39c12"/>
+    <line x1="90" y1="70" x2="115" y2="55" stroke="#f39c12" stroke-width="3"/>
+    <polygon points="118,52 110,55 112,62" fill="#f39c12"/>
+    <text x="90" y="115" fill="#888" font-family="Arial" font-size="9" text-anchor="middle">theta = atan2(m01, m10)</text>
+  </g>
+  
+  <!-- Second Row -->
+  <!-- Step 5: rBRIEF -->
+  <g transform="translate(255, 250)">
+    <rect x="0" y="0" width="200" height="120" fill="#222" stroke="#2ecc71" stroke-width="2" rx="8"/>
+    <text x="100" y="25" fill="#2ecc71" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle">Step 5: rBRIEF 256-bit</text>
+    <rect x="20" y="40" width="160" height="55" fill="#2a2a2a" stroke="#444" rx="3"/>
+    <!-- Binary pattern -->
+    <text x="100" y="58" fill="#2ecc71" font-family="monospace" font-size="10" text-anchor="middle">10110010 11001011</text>
+    <text x="100" y="73" fill="#2ecc71" font-family="monospace" font-size="10" text-anchor="middle">01101001 10110100</text>
+    <text x="100" y="88" fill="#888" font-family="monospace" font-size="8" text-anchor="middle">... 256 bits total ...</text>
+    <text x="100" y="115" fill="#888" font-family="Arial" font-size="9" text-anchor="middle">Rotated by theta</text>
+  </g>
+  
+  <!-- Arrow -->
+  <g transform="translate(460, 310)">
+    <line x1="0" y1="0" x2="30" y2="0" stroke="#fff" stroke-width="2"/>
+    <polygon points="35,0 28,-5 28,5" fill="#fff"/>
+  </g>
+  
+  <!-- Step 6: Matching -->
+  <g transform="translate(500, 250)">
+    <rect x="0" y="0" width="200" height="120" fill="#222" stroke="#3498db" stroke-width="2" rx="8"/>
+    <text x="100" y="25" fill="#3498db" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle">Step 6: Hamming Match</text>
+    <g transform="translate(20, 40)">
+      <text x="0" y="12" fill="#fff" font-family="monospace" font-size="10">A: 10110010</text>
+      <text x="0" y="28" fill="#fff" font-family="monospace" font-size="10">B: 11100010</text>
+      <text x="0" y="44" fill="#ffa500" font-family="monospace" font-size="10">XOR: 01010000</text>
+      <text x="0" y="60" fill="#2ecc71" font-family="Arial" font-size="10">popcount = 2</text>
+    </g>
+    <text x="100" y="115" fill="#888" font-family="Arial" font-size="9" text-anchor="middle">XOR + popcount = FAST!</text>
+  </g>
+  
+  <!-- Key Advantages Box -->
+  <g transform="translate(30, 400)">
+    <rect x="0" y="0" width="890" height="130" fill="#222" stroke="#2ecc71" stroke-width="2" rx="8"/>
+    <text x="445" y="25" fill="#2ecc71" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle">ORB Key Advantages</text>
+    
+    <g transform="translate(30, 45)">
+      <text x="0" y="0" fill="#ffa500" font-family="Arial" font-size="11" font-weight="bold">1. Patent-Free</text>
+      <text x="0" y="18" fill="#888" font-family="Arial" font-size="10">No licensing issues</text>
+    </g>
+    
+    <g transform="translate(200, 45)">
+      <text x="0" y="0" fill="#ffa500" font-family="Arial" font-size="11" font-weight="bold">2. Binary Descriptor</text>
+      <text x="0" y="18" fill="#888" font-family="Arial" font-size="10">32 bytes vs 512 bytes (SIFT)</text>
+    </g>
+    
+    <g transform="translate(420, 45)">
+      <text x="0" y="0" fill="#ffa500" font-family="Arial" font-size="11" font-weight="bold">3. Hamming Distance</text>
+      <text x="0" y="18" fill="#888" font-family="Arial" font-size="10">XOR + popcount = 200x faster</text>
+    </g>
+    
+    <g transform="translate(660, 45)">
+      <text x="0" y="0" fill="#ffa500" font-family="Arial" font-size="11" font-weight="bold">4. Real-Time</text>
+      <text x="0" y="18" fill="#888" font-family="Arial" font-size="10">~10ms vs ~100ms (SIFT)</text>
+    </g>
+    
+    <text x="445" y="100" fill="#2ecc71" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle">Perfect for mobile/embedded real-time applications</text>
+  </g>
+  
+</svg>
