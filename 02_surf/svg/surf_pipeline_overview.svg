@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="950" height="550" viewBox="0 0 950 550">
+  <!-- Dark Background -->
+  <rect width="950" height="550" fill="#1a1a1a"/>
+  
+  <!-- Title -->
+  <text x="475" y="35" fill="#00bfff" font-family="Arial" font-size="26" font-weight="bold" text-anchor="middle">SURF Pipeline Overview</text>
+  <text x="475" y="58" fill="#888" font-family="Arial" font-size="12" text-anchor="middle">Speeded-Up Robust Features - 3x Faster than SIFT using Integral Images</text>
+  
+  <!-- Step 1: Integral Image -->
+  <g transform="translate(30, 90)">
+    <rect x="0" y="0" width="180" height="120" fill="#222" stroke="#00bfff" stroke-width="2" rx="8"/>
+    <text x="90" y="25" fill="#00bfff" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle">Step 1: Integral Image</text>
+    <rect x="15" y="40" width="65" height="50" fill="#3d5a73" stroke="#444" rx="3"/>
+    <text x="47" y="70" fill="#fff" font-family="Arial" font-size="9" text-anchor="middle">Original</text>
+    <text x="105" y="65" fill="#fff" font-family="Arial" font-size="16">-></text>
+    <rect x="120" y="40" width="45" height="50" fill="#2ecc71" opacity="0.4" stroke="#2ecc71" rx="3"/>
+    <text x="142" y="70" fill="#2ecc71" font-family="Arial" font-size="9" text-anchor="middle">II</text>
+    <text x="90" y="110" fill="#888" font-family="Arial" font-size="9" text-anchor="middle">O(1) box sums</text>
+  </g>
+  
+  <!-- Arrow -->
+  <g transform="translate(215, 145)">
+    <line x1="0" y1="0" x2="30" y2="0" stroke="#fff" stroke-width="2"/>
+    <polygon points="35,0 28,-5 28,5" fill="#fff"/>
+  </g>
+  
+  <!-- Step 2: Hessian -->
+  <g transform="translate(255, 90)">
+    <rect x="0" y="0" width="180" height="120" fill="#222" stroke="#ffa500" stroke-width="2" rx="8"/>
+    <text x="90" y="25" fill="#ffa500" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle">Step 2: Hessian det(H)</text>
+    <rect x="15" y="40" width="35" height="30" fill="#ffa500" opacity="0.3" stroke="#ffa500" rx="2"/>
+    <rect x="55" y="40" width="40" height="35" fill="#ffa500" opacity="0.4" stroke="#ffa500" rx="2"/>
+    <rect x="100" y="40" width="45" height="40" fill="#ffa500" opacity="0.5" stroke="#ffa500" rx="2"/>
+    <rect x="150" y="40" width="20" height="25" fill="#ffa500" opacity="0.6" stroke="#ffa500" rx="2"/>
+    <text x="90" y="95" fill="#888" font-family="Arial" font-size="9" text-anchor="middle">Box filters at 4 scales</text>
+    <text x="90" y="110" fill="#fff" font-family="Arial" font-size="9" text-anchor="middle">9x9, 15x15, 21x21, 27x27</text>
+  </g>
+  
+  <!-- Arrow -->
+  <g transform="translate(440, 145)">
+    <line x1="0" y1="0" x2="30" y2="0" stroke="#fff" stroke-width="2"/>
+    <polygon points="35,0 28,-5 28,5" fill="#fff"/>
+  </g>
+  
+  <!-- Step 3: Keypoint Detection -->
+  <g transform="translate(480, 90)">
+    <rect x="0" y="0" width="180" height="120" fill="#222" stroke="#e74c3c" stroke-width="2" rx="8"/>
+    <text x="90" y="25" fill="#e74c3c" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle">Step 3: Keypoints</text>
+    <rect x="15" y="40" width="150" height="50" fill="#2a2a2a" stroke="#444" rx="3"/>
+    <circle cx="45" cy="65" r="8" fill="none" stroke="#e74c3c" stroke-width="2"/>
+    <circle cx="85" cy="55" r="10" fill="none" stroke="#e74c3c" stroke-width="2"/>
+    <circle cx="120" cy="70" r="6" fill="none" stroke="#e74c3c" stroke-width="2"/>
+    <circle cx="145" cy="58" r="7" fill="none" stroke="#e74c3c" stroke-width="2"/>
+    <text x="90" y="110" fill="#888" font-family="Arial" font-size="9" text-anchor="middle">26-neighbor extrema</text>
+  </g>
+  
+  <!-- Arrow -->
+  <g transform="translate(665, 145)">
+    <line x1="0" y1="0" x2="30" y2="0" stroke="#fff" stroke-width="2"/>
+    <polygon points="35,0 28,-5 28,5" fill="#fff"/>
+  </g>
+  
+  <!-- Step 4: Filtering -->
+  <g transform="translate(705, 90)">
+    <rect x="0" y="0" width="180" height="120" fill="#222" stroke="#9b59b6" stroke-width="2" rx="8"/>
+    <text x="90" y="25" fill="#9b59b6" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle">Step 4: Filter</text>
+    <rect x="15" y="40" width="150" height="50" fill="#2a2a2a" stroke="#444" rx="3"/>
+    <circle cx="55" cy="65" r="8" fill="none" stroke="#2ecc71" stroke-width="2"/>
+    <circle cx="100" cy="60" r="10" fill="none" stroke="#2ecc71" stroke-width="2"/>
+    <circle cx="140" cy="68" r="7" fill="none" stroke="#2ecc71" stroke-width="2"/>
+    <text x="90" y="110" fill="#888" font-family="Arial" font-size="9" text-anchor="middle">Remove weak keypoints</text>
+  </g>
+  
+  <!-- Second Row -->
+  <!-- Step 5: Orientation -->
+  <g transform="translate(255, 250)">
+    <rect x="0" y="0" width="200" height="120" fill="#222" stroke="#f39c12" stroke-width="2" rx="8"/>
+    <text x="100" y="25" fill="#f39c12" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle">Step 5: Orientation</text>
+    <circle cx="100" cy="70" r="35" fill="none" stroke="#f39c12" stroke-width="2"/>
+    <line x1="100" y1="70" x2="125" y2="50" stroke="#f39c12" stroke-width="3"/>
+    <polygon points="128,47 120,52 123,58" fill="#f39c12"/>
+    <text x="100" y="115" fill="#888" font-family="Arial" font-size="9" text-anchor="middle">Haar wavelets + 60 deg window</text>
+  </g>
+  
+  <!-- Arrow -->
+  <g transform="translate(460, 310)">
+    <line x1="0" y1="0" x2="30" y2="0" stroke="#fff" stroke-width="2"/>
+    <polygon points="35,0 28,-5 28,5" fill="#fff"/>
+  </g>
+  
+  <!-- Step 6: Descriptor -->
+  <g transform="translate(500, 250)">
+    <rect x="0" y="0" width="200" height="120" fill="#222" stroke="#2ecc71" stroke-width="2" rx="8"/>
+    <text x="100" y="25" fill="#2ecc71" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle">Step 6: 64-D Descriptor</text>
+    <!-- 4x4 grid -->
+    <g transform="translate(50, 40)">
+      <rect x="0" y="0" width="20" height="20" fill="#2ecc71" opacity="0.3" stroke="#2ecc71"/>
+      <rect x="20" y="0" width="20" height="20" fill="#2ecc71" opacity="0.4" stroke="#2ecc71"/>
+      <rect x="40" y="0" width="20" height="20" fill="#2ecc71" opacity="0.3" stroke="#2ecc71"/>
+      <rect x="60" y="0" width="20" height="20" fill="#2ecc71" opacity="0.5" stroke="#2ecc71"/>
+      <rect x="0" y="20" width="20" height="20" fill="#2ecc71" opacity="0.4" stroke="#2ecc71"/>
+      <rect x="20" y="20" width="20" height="20" fill="#2ecc71" opacity="0.5" stroke="#2ecc71"/>
+      <rect x="40" y="20" width="20" height="20" fill="#2ecc71" opacity="0.4" stroke="#2ecc71"/>
+      <rect x="60" y="20" width="20" height="20" fill="#2ecc71" opacity="0.3" stroke="#2ecc71"/>
+      <rect x="0" y="40" width="20" height="20" fill="#2ecc71" opacity="0.5" stroke="#2ecc71"/>
+      <rect x="20" y="40" width="20" height="20" fill="#2ecc71" opacity="0.3" stroke="#2ecc71"/>
+      <rect x="40" y="40" width="20" height="20" fill="#2ecc71" opacity="0.5" stroke="#2ecc71"/>
+      <rect x="60" y="40" width="20" height="20" fill="#2ecc71" opacity="0.4" stroke="#2ecc71"/>
+      <rect x="0" y="60" width="20" height="20" fill="#2ecc71" opacity="0.3" stroke="#2ecc71"/>
+      <rect x="20" y="60" width="20" height="20" fill="#2ecc71" opacity="0.4" stroke="#2ecc71"/>
+      <rect x="40" y="60" width="20" height="20" fill="#2ecc71" opacity="0.3" stroke="#2ecc71"/>
+      <rect x="60" y="60" width="20" height="20" fill="#2ecc71" opacity="0.5" stroke="#2ecc71"/>
+    </g>
+    <text x="100" y="115" fill="#888" font-family="Arial" font-size="9" text-anchor="middle">4x4 subregions x 4 values</text>
+  </g>
+  
+  <!-- Key Differences Box -->
+  <g transform="translate(30, 400)">
+    <rect x="0" y="0" width="890" height="130" fill="#222" stroke="#00bfff" stroke-width="2" rx="8"/>
+    <text x="445" y="25" fill="#00bfff" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle">SURF vs SIFT: Key Speed Improvements</text>
+    
+    <g transform="translate(30, 45)">
+      <text x="0" y="0" fill="#ffa500" font-family="Arial" font-size="11" font-weight="bold">1. Integral Image</text>
+      <text x="0" y="18" fill="#888" font-family="Arial" font-size="10">Any box sum in O(1) - just 4 lookups!</text>
+    </g>
+    
+    <g transform="translate(250, 45)">
+      <text x="0" y="0" fill="#ffa500" font-family="Arial" font-size="11" font-weight="bold">2. Box Filters</text>
+      <text x="0" y="18" fill="#888" font-family="Arial" font-size="10">Approximate Gaussians with boxes</text>
+    </g>
+    
+    <g transform="translate(470, 45)">
+      <text x="0" y="0" fill="#ffa500" font-family="Arial" font-size="11" font-weight="bold">3. Filter Pyramid</text>
+      <text x="0" y="18" fill="#888" font-family="Arial" font-size="10">Same image, different filter sizes</text>
+    </g>
+    
+    <g transform="translate(690, 45)">
+      <text x="0" y="0" fill="#ffa500" font-family="Arial" font-size="11" font-weight="bold">4. 64-D Descriptor</text>
+      <text x="0" y="18" fill="#888" font-family="Arial" font-size="10">Half the size of SIFT (128-D)</text>
+    </g>
+    
+    <text x="445" y="100" fill="#2ecc71" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle">Result: ~3x faster than SIFT with comparable accuracy</text>
+  </g>
+  
+</svg>
