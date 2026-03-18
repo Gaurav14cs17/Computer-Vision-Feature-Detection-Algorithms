@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="950" height="550" viewBox="0 0 950 550">
+  <!-- Dark Background -->
+  <rect width="950" height="550" fill="#1a1a1a"/>
+  
+  <!-- Title -->
+  <text x="475" y="35" fill="#00bfff" font-family="Arial" font-size="26" font-weight="bold" text-anchor="middle">HOG Pipeline Overview</text>
+  <text x="475" y="58" fill="#888" font-family="Arial" font-size="12" text-anchor="middle">Histogram of Oriented Gradients - Dense Descriptor for Object Detection</text>
+  
+  <!-- Step 1: Preprocessing -->
+  <g transform="translate(30, 90)">
+    <rect x="0" y="0" width="200" height="120" fill="#222" stroke="#00bfff" stroke-width="2" rx="8"/>
+    <text x="100" y="25" fill="#00bfff" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle">Step 1: Preprocessing</text>
+    <rect x="15" y="40" width="50" height="40" fill="#e74c3c" opacity="0.5" stroke="#e74c3c" rx="2"/>
+    <rect x="25" y="50" width="30" height="20" fill="#2ecc71" opacity="0.5"/>
+    <rect x="35" y="55" width="10" height="10" fill="#3498db" opacity="0.5"/>
+    <text x="40" y="95" fill="#888" font-family="Arial" font-size="8" text-anchor="middle">RGB</text>
+    <text x="100" y="65" fill="#fff" font-family="Arial" font-size="14">-></text>
+    <rect x="135" y="45" width="50" height="40" fill="#888" stroke="#888" rx="2"/>
+    <text x="160" y="95" fill="#888" font-family="Arial" font-size="8" text-anchor="middle">Gray+Gamma</text>
+    <text x="100" y="115" fill="#888" font-family="Arial" font-size="9" text-anchor="middle">I^0.5 normalization</text>
+  </g>
+  
+  <!-- Arrow -->
+  <g transform="translate(235, 145)">
+    <line x1="0" y1="0" x2="30" y2="0" stroke="#fff" stroke-width="2"/>
+    <polygon points="35,0 28,-5 28,5" fill="#fff"/>
+  </g>
+  
+  <!-- Step 2: Gradients -->
+  <g transform="translate(275, 90)">
+    <rect x="0" y="0" width="200" height="120" fill="#222" stroke="#e74c3c" stroke-width="2" rx="8"/>
+    <text x="100" y="25" fill="#e74c3c" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle">Step 2: Gradients</text>
+    <!-- Gradient arrows -->
+    <g transform="translate(30, 45)">
+      <line x1="0" y1="20" x2="30" y2="20" stroke="#e74c3c" stroke-width="2"/>
+      <polygon points="35,20 28,15 28,25" fill="#e74c3c"/>
+      <text x="17" y="50" fill="#888" font-family="Arial" font-size="9" text-anchor="middle">Gx</text>
+    </g>
+    <g transform="translate(80, 45)">
+      <line x1="15" y1="35" x2="15" y2="5" stroke="#e74c3c" stroke-width="2"/>
+      <polygon points="15,0 10,8 20,8" fill="#e74c3c"/>
+      <text x="15" y="50" fill="#888" font-family="Arial" font-size="9" text-anchor="middle">Gy</text>
+    </g>
+    <g transform="translate(130, 45)">
+      <line x1="0" y1="35" x2="25" y2="10" stroke="#ffa500" stroke-width="2"/>
+      <polygon points="28,7 18,10 22,18" fill="#ffa500"/>
+      <text x="15" y="50" fill="#888" font-family="Arial" font-size="9" text-anchor="middle">M, theta</text>
+    </g>
+    <text x="100" y="115" fill="#888" font-family="Arial" font-size="9" text-anchor="middle">M = sqrt(Gx^2 + Gy^2)</text>
+  </g>
+  
+  <!-- Arrow -->
+  <g transform="translate(480, 145)">
+    <line x1="0" y1="0" x2="30" y2="0" stroke="#fff" stroke-width="2"/>
+    <polygon points="35,0 28,-5 28,5" fill="#fff"/>
+  </g>
+  
+  <!-- Step 3: Cell Histograms -->
+  <g transform="translate(520, 90)">
+    <rect x="0" y="0" width="200" height="120" fill="#222" stroke="#9b59b6" stroke-width="2" rx="8"/>
+    <text x="100" y="25" fill="#9b59b6" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle">Step 3: Cell Histograms</text>
+    <!-- 8x8 cell grid preview -->
+    <g transform="translate(20, 40)">
+      <rect x="0" y="0" width="60" height="50" fill="#2a2a2a" stroke="#9b59b6"/>
+      <line x1="20" y1="0" x2="20" y2="50" stroke="#9b59b6" stroke-width="0.5"/>
+      <line x1="40" y1="0" x2="40" y2="50" stroke="#9b59b6" stroke-width="0.5"/>
+      <line x1="0" y1="17" x2="60" y2="17" stroke="#9b59b6" stroke-width="0.5"/>
+      <line x1="0" y1="34" x2="60" y2="34" stroke="#9b59b6" stroke-width="0.5"/>
+      <text x="30" y="65" fill="#888" font-family="Arial" font-size="8" text-anchor="middle">8x8 cells</text>
+    </g>
+    <!-- Histogram -->
+    <g transform="translate(100, 40)">
+      <rect x="0" y="40" width="8" height="10" fill="#9b59b6"/>
+      <rect x="10" y="35" width="8" height="15" fill="#9b59b6"/>
+      <rect x="20" y="20" width="8" height="30" fill="#9b59b6"/>
+      <rect x="30" y="30" width="8" height="20" fill="#9b59b6"/>
+      <rect x="40" y="25" width="8" height="25" fill="#9b59b6"/>
+      <rect x="50" y="38" width="8" height="12" fill="#9b59b6"/>
+      <rect x="60" y="42" width="8" height="8" fill="#9b59b6"/>
+      <rect x="70" y="45" width="8" height="5" fill="#9b59b6"/>
+      <rect x="80" y="40" width="8" height="10" fill="#9b59b6"/>
+      <text x="45" y="65" fill="#888" font-family="Arial" font-size="8" text-anchor="middle">9 bins</text>
+    </g>
+    <text x="100" y="115" fill="#888" font-family="Arial" font-size="9" text-anchor="middle">80x60 = 4800 cells</text>
+  </g>
+  
+  <!-- Arrow -->
+  <g transform="translate(725, 145)">
+    <line x1="0" y1="0" x2="30" y2="0" stroke="#fff" stroke-width="2"/>
+    <polygon points="35,0 28,-5 28,5" fill="#fff"/>
+  </g>
+  
+  <!-- Step 4: Block Normalization -->
+  <g transform="translate(760, 90)">
+    <rect x="0" y="0" width="160" height="120" fill="#222" stroke="#2ecc71" stroke-width="2" rx="8"/>
+    <text x="80" y="25" fill="#2ecc71" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle">Step 4: Blocks</text>
+    <!-- 2x2 block -->
+    <g transform="translate(40, 40)">
+      <rect x="0" y="0" width="35" height="30" fill="#2ecc71" opacity="0.3" stroke="#2ecc71"/>
+      <rect x="35" y="0" width="35" height="30" fill="#2ecc71" opacity="0.4" stroke="#2ecc71"/>
+      <rect x="0" y="30" width="35" height="30" fill="#2ecc71" opacity="0.4" stroke="#2ecc71"/>
+      <rect x="35" y="30" width="35" height="30" fill="#2ecc71" opacity="0.5" stroke="#2ecc71"/>
+    </g>
+    <text x="80" y="100" fill="#888" font-family="Arial" font-size="8" text-anchor="middle">2x2 cells, L2 norm</text>
+    <text x="80" y="115" fill="#888" font-family="Arial" font-size="9" text-anchor="middle">167,796-D</text>
+  </g>
+  
+  <!-- Dense vs Sparse Comparison -->
+  <g transform="translate(30, 240)">
+    <rect x="0" y="0" width="430" height="140" fill="#222" stroke="#ffa500" stroke-width="2" rx="8"/>
+    <text x="215" y="25" fill="#ffa500" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle">HOG = DENSE Descriptor (Different from SIFT/SURF/ORB)</text>
+    
+    <!-- Sparse -->
+    <g transform="translate(30, 45)">
+      <rect x="0" y="0" width="80" height="70" fill="#2a2a2a" stroke="#e74c3c" stroke-width="2" rx="4"/>
+      <circle cx="20" cy="20" r="8" fill="none" stroke="#e74c3c" stroke-width="1.5"/>
+      <circle cx="55" cy="30" r="10" fill="none" stroke="#e74c3c" stroke-width="1.5"/>
+      <circle cx="35" cy="55" r="7" fill="none" stroke="#e74c3c" stroke-width="1.5"/>
+      <text x="40" y="85" fill="#e74c3c" font-family="Arial" font-size="9" text-anchor="middle">SIFT/ORB: Sparse</text>
+    </g>
+    
+    <!-- VS -->
+    <text x="145" y="85" fill="#fff" font-family="Arial" font-size="16" font-weight="bold">vs</text>
+    
+    <!-- Dense -->
+    <g transform="translate(175, 45)">
+      <rect x="0" y="0" width="80" height="70" fill="#2ecc71" opacity="0.3" stroke="#2ecc71" stroke-width="2" rx="4"/>
+      <!-- Grid lines -->
+      <line x1="20" y1="0" x2="20" y2="70" stroke="#2ecc71" stroke-width="0.5"/>
+      <line x1="40" y1="0" x2="40" y2="70" stroke="#2ecc71" stroke-width="0.5"/>
+      <line x1="60" y1="0" x2="60" y2="70" stroke="#2ecc71" stroke-width="0.5"/>
+      <line x1="0" y1="17" x2="80" y2="17" stroke="#2ecc71" stroke-width="0.5"/>
+      <line x1="0" y1="35" x2="80" y2="35" stroke="#2ecc71" stroke-width="0.5"/>
+      <line x1="0" y1="52" x2="80" y2="52" stroke="#2ecc71" stroke-width="0.5"/>
+      <text x="40" y="85" fill="#2ecc71" font-family="Arial" font-size="9" text-anchor="middle">HOG: Dense</text>
+    </g>
+    
+    <g transform="translate(280, 50)">
+      <text x="0" y="0" fill="#fff" font-family="Arial" font-size="10">SIFT: "Find and describe keypoints"</text>
+      <text x="0" y="20" fill="#fff" font-family="Arial" font-size="10">HOG: "Describe entire window"</text>
+      <text x="0" y="45" fill="#888" font-family="Arial" font-size="9">HOG processes EVERY pixel</text>
+      <text x="0" y="60" fill="#888" font-family="Arial" font-size="9">like a convolution (S=1)</text>
+    </g>
+  </g>
+  
+  <!-- Application Box -->
+  <g transform="translate(480, 240)">
+    <rect x="0" y="0" width="440" height="140" fill="#222" stroke="#2ecc71" stroke-width="2" rx="8"/>
+    <text x="220" y="25" fill="#2ecc71" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle">Application: Pedestrian Detection (HOG + SVM)</text>
+    
+    <g transform="translate(20, 45)">
+      <rect x="0" y="0" width="60" height="80" fill="#2a2a2a" stroke="#444" rx="3"/>
+      <!-- Stick figure -->
+      <circle cx="30" cy="15" r="8" fill="none" stroke="#fff" stroke-width="1.5"/>
+      <line x1="30" y1="23" x2="30" y2="50" stroke="#fff" stroke-width="1.5"/>
+      <line x1="30" y1="30" x2="15" y2="40" stroke="#fff" stroke-width="1.5"/>
+      <line x1="30" y1="30" x2="45" y2="40" stroke="#fff" stroke-width="1.5"/>
+      <line x1="30" y1="50" x2="18" y2="72" stroke="#fff" stroke-width="1.5"/>
+      <line x1="30" y1="50" x2="42" y2="72" stroke="#fff" stroke-width="1.5"/>
+      <text x="30" y="95" fill="#888" font-family="Arial" font-size="8" text-anchor="middle">64x128</text>
+    </g>
+    
+    <g transform="translate(100, 55)">
+      <text x="0" y="0" fill="#fff" font-family="Arial" font-size="10">-></text>
+    </g>
+    
+    <g transform="translate(130, 45)">
+      <rect x="0" y="5" width="120" height="15" fill="#9b59b6" opacity="0.5"/>
+      <text x="60" y="15" fill="#fff" font-family="Arial" font-size="8" text-anchor="middle">HOG: 3780-D</text>
+      <text x="60" y="40" fill="#fff" font-family="Arial" font-size="10">-></text>
+      <rect x="20" y="50" width="80" height="20" fill="#ffa500" opacity="0.5" rx="3"/>
+      <text x="60" y="65" fill="#fff" font-family="Arial" font-size="9" text-anchor="middle">SVM Classifier</text>
+      <text x="60" y="95" fill="#888" font-family="Arial" font-size="8" text-anchor="middle">Person / Not Person</text>
+    </g>
+    
+    <g transform="translate(280, 50)">
+      <text x="0" y="0" fill="#2ecc71" font-family="Arial" font-size="10">1. Slide window across image</text>
+      <text x="0" y="18" fill="#2ecc71" font-family="Arial" font-size="10">2. Extract HOG from window</text>
+      <text x="0" y="36" fill="#2ecc71" font-family="Arial" font-size="10">3. SVM predicts person/not</text>
+      <text x="0" y="54" fill="#2ecc71" font-family="Arial" font-size="10">4. Non-max suppression</text>
+    </g>
+  </g>
+  
+  <!-- Key Properties Box -->
+  <g transform="translate(30, 400)">
+    <rect x="0" y="0" width="890" height="130" fill="#222" stroke="#00bfff" stroke-width="2" rx="8"/>
+    <text x="445" y="25" fill="#00bfff" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle">HOG Key Properties</text>
+    
+    <g transform="translate(30, 45)">
+      <text x="0" y="0" fill="#ffa500" font-family="Arial" font-size="11" font-weight="bold">1. Dense Processing</text>
+      <text x="0" y="18" fill="#888" font-family="Arial" font-size="10">Every pixel contributes</text>
+    </g>
+    
+    <g transform="translate(220, 45)">
+      <text x="0" y="0" fill="#ffa500" font-family="Arial" font-size="11" font-weight="bold">2. Unsigned Gradients</text>
+      <text x="0" y="18" fill="#888" font-family="Arial" font-size="10">0-180 deg (9 bins)</text>
+    </g>
+    
+    <g transform="translate(430, 45)">
+      <text x="0" y="0" fill="#ffa500" font-family="Arial" font-size="11" font-weight="bold">3. Block Normalization</text>
+      <text x="0" y="18" fill="#888" font-family="Arial" font-size="10">Illumination invariant</text>
+    </g>
+    
+    <g transform="translate(660, 45)">
+      <text x="0" y="0" fill="#ffa500" font-family="Arial" font-size="11" font-weight="bold">4. High Dimensional</text>
+      <text x="0" y="18" fill="#888" font-family="Arial" font-size="10">167,796-D for 640x480</text>
+    </g>
+    
+    <text x="445" y="100" fill="#2ecc71" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle">Best for: Object detection with distinctive shapes (pedestrians, faces)</text>
+  </g>
+  
+</svg>
