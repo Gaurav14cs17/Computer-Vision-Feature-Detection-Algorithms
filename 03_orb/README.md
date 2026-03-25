@@ -33,7 +33,8 @@ This article walks through the complete ORB pipeline, from mathematical foundati
    - [4.3 Key Properties](#43-key-properties)
    - [4.4 What's Next? Matching](#44-whats-next-matching-descriptors)
 5. [Common Mistakes & FAQ](#5-common-mistakes--faq)
-6. [References](#6-references)
+6. [Complete Python Implementation](#6-complete-python-implementation)
+7. [References](#7-references)
 
 ---
 
@@ -233,7 +234,7 @@ Step 2: Compute new dimensions
 Result: Level 3 image is 370 × 278 pixels
 ```
 
-![Scale Pyramid Levels](images/orb_scale_pyramid.png)
+![Scale Pyramid Levels](images/orb_step1_full_pyramid.png)
 
 *ORB 8-level scale pyramid. Each level is 1/1.2× smaller than the previous.*
 
@@ -620,7 +621,7 @@ where:
 | R ≈ 0 | Flat region | REJECT |
 | R << 0 | Edge | REJECT |
 
-![Harris Corner Response Visualization](images/orb_harris_response.png)
+![Harris Corner Response Visualization](images/orb_step3_substeps.png)
 
 *Harris response map showing corner quality scores. Brighter regions indicate stronger corner responses.*
 
@@ -738,7 +739,7 @@ This is the "center of mass" of the intensity distribution
 This angle points from keypoint center toward the intensity centroid
 ```
 
-![Intensity Centroid Method](images/orb_intensity_centroid.png)
+![Intensity Centroid Method](images/orb_step4_substeps.png)
 
 *Visualization of the intensity centroid method. The arrow points from keypoint center to the computed centroid, defining the orientation.*
 
@@ -970,11 +971,11 @@ As bytes: 0x56 0xCB ... (32 bytes total)
 | Matching | Euclidean distance | Hamming distance |
 | Match speed | ~100 μs/match | ~0.5 μs/match |
 
-![BRIEF Sampling Pattern](images/orb_brief_pattern.png)
+![BRIEF Sampling Pattern](images/orb_brief_concept.png)
 
 *The 256 point pairs used for BRIEF descriptor extraction. Each line connects a pair of points that are compared.*
 
-![Binary Descriptor Visualization](images/orb_binary_descriptor.png)
+![Binary Descriptor Visualization](images/orb_rbrief_rotation.png)
 
 *Visualization of a 256-bit binary descriptor as a grid. Black=0, White=1.*
 
@@ -1097,7 +1098,7 @@ Typical threshold:
 Interpretation: ~19.5% of bits can differ and still match
 ```
 
-![Hamming Distance Histogram](images/orb_hamming_histogram.png)
+![Hamming Distance Histogram](images/orb_hamming_distance.png)
 
 *Distribution of Hamming distances for matched (green) and non-matched (red) keypoint pairs.*
 
@@ -1137,7 +1138,7 @@ def match_descriptors(descs1, descs2, threshold=50):
                 second_best = dist
         
         # Lowe's ratio test (adapted for binary)
-        if best_dist < threshold and best_dist < 0.75 * second_best:
+        if best_dist < threshold and best_dist < 0.8 * second_best:
             matches.append((i, best_j, best_dist))
     
     return matches
@@ -1165,7 +1166,7 @@ def match_descriptors(descs1, descs2, threshold=50):
 
 ### 4.1 Complete Pipeline
 
-![Complete ORB Pipeline Summary](images/orb_complete_summary.png)
+![Complete ORB Pipeline Summary](images/orb_complete_pipeline.png)
 
 ```
 INPUT: Image (H × W)
@@ -1256,7 +1257,7 @@ Image 2: ~480 keypoints, each with 256-bit descriptor
 For each keypoint in Image 1:
   1. Compute Hamming distance to ALL keypoints in Image 2
   2. Find nearest neighbor (smallest distance)
-  3. Apply ratio test: d1/d2 < 0.75
+  3. Apply ratio test: d1/d2 < 0.8
 ```
 
 **Brute-Force Matching:**
@@ -1273,7 +1274,7 @@ for each descriptor A in image1:
 For query descriptor Q:
   1. Find nearest neighbor N1 with distance d1
   2. Find second nearest neighbor N2 with distance d2
-  3. Accept match if: d1/d2 < 0.75
+  3. Accept match if: d1/d2 < 0.8
 
 Why? Distinctive matches have d1 << d2
 ```
@@ -1286,7 +1287,7 @@ Image 1 keypoint at (200, 150):
   Hamming distance to Image 2 keypoint at (195, 148):  12 (best)
   Hamming distance to Image 2 keypoint at (350, 80):   89 (second-best)
   
-  Ratio: 12 / 89 = 0.13 < 0.75 → GOOD MATCH!
+  Ratio: 12 / 89 = 0.13 < 0.8 → GOOD MATCH!
 ```
 
 ---
@@ -1347,7 +1348,362 @@ Image 1 keypoint at (200, 150):
 
 ---
 
-## 6. References
+## 6. Complete Python Implementation
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         ORB — FULL PIPELINE                                 │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│   INPUT IMAGE                                                               │
+│         │                                                                   │
+│         ▼                                                                   │
+│   ┌─────────────────────────────────────────────────────────────────────┐   │
+│   │ 1. FAST CORNERS: Check 16-pixel circle for N contiguous brighter   │   │
+│   │    or darker pixels (N=9 for FAST-9)                               │   │
+│   └─────────────────────────────────────────────────────────────────────┘   │
+│         │                                                                   │
+│         ▼                                                                   │
+│   ┌─────────────────────────────────────────────────────────────────────┐   │
+│   │ 2. HARRIS RANKING: Score corners by Harris response                │   │
+│   │    R = det(M) - k·trace(M)²                                        │   │
+│   └─────────────────────────────────────────────────────────────────────┘   │
+│         │                                                                   │
+│         ▼                                                                   │
+│   ┌─────────────────────────────────────────────────────────────────────┐   │
+│   │ 3. ORIENTATION: Intensity centroid → rotation angle                │   │
+│   │    θ = atan2(m01, m10) using image moments                         │   │
+│   └─────────────────────────────────────────────────────────────────────┘   │
+│         │                                                                   │
+│         ▼                                                                   │
+│   ┌─────────────────────────────────────────────────────────────────────┐   │
+│   │ 4. rBRIEF: Binary descriptor from rotated point pairs              │   │
+│   │    256 bits, rotation-invariant                                    │   │
+│   └─────────────────────────────────────────────────────────────────────┘   │
+│         │                                                                   │
+│         ▼                                                                   │
+│   OUTPUT: Keypoints with 256-bit binary descriptors                         │
+│   MATCHING: Hamming distance (XOR + popcount) — ~100× faster than SIFT     │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+```python
+import math
+import random
+
+
+class ORB:
+    """
+    Oriented FAST and Rotated BRIEF (ORB) implementation.
+    
+    Key innovations:
+    - FAST corners with Harris ranking
+    - Intensity centroid for rotation
+    - Rotation-invariant BRIEF (rBRIEF)
+    - ~100× faster matching than SIFT (Hamming vs L2)
+    """
+    
+    def __init__(self, n_keypoints=500, fast_threshold=20, n_pairs=256):
+        """
+        Initialize ORB parameters.
+        
+        n_keypoints: maximum keypoints to detect
+        fast_threshold: FAST intensity difference threshold
+        n_pairs: number of BRIEF comparison pairs (256 standard)
+        """
+        self.n_keypoints = n_keypoints
+        self.fast_threshold = fast_threshold
+        self.n_pairs = n_pairs
+        self.patch_size = 31
+        self.brief_pairs = self._generate_brief_pairs()
+        
+        # FAST circle offsets (16 pixels at radius 3)
+        self.fast_circle = [
+            (0, -3), (1, -3), (2, -2), (3, -1),
+            (3, 0), (3, 1), (2, 2), (1, 3),
+            (0, 3), (-1, 3), (-2, 2), (-3, 1),
+            (-3, 0), (-3, -1), (-2, -2), (-1, -3)
+        ]
+    
+    def _generate_brief_pairs(self):
+        """
+        Generate random point pairs for BRIEF descriptor.
+        
+        Each pair (p1, p2) defines a binary test:
+        bit = 1 if I(p1) < I(p2) else 0
+        """
+        random.seed(42)  # reproducible
+        pairs = []
+        half = self.patch_size // 2
+        for _ in range(self.n_pairs):
+            x1 = random.randint(-half, half)
+            y1 = random.randint(-half, half)
+            x2 = random.randint(-half, half)
+            y2 = random.randint(-half, half)
+            pairs.append(((x1, y1), (x2, y2)))
+        return pairs
+    
+    # ═══════════════════════════════════════════════════════════════════════════
+    # Step 1: FAST Corner Detection
+    # ═══════════════════════════════════════════════════════════════════════════
+    
+    def detect_fast_corners(self, img):
+        """
+        Detect corners using FAST algorithm.
+        
+        A pixel is a corner if N contiguous pixels on a circle of 16
+        are all brighter or all darker than center by threshold.
+        
+        Visual:
+                  16 1 2
+               15       3
+              14    P    4    P = center pixel
+              13         5    Numbers = circle positions
+               12       6
+                  11 10 9 8 7
+        """
+        h, w = len(img), len(img[0])
+        corners = []
+        
+        for y in range(4, h - 4):
+            for x in range(4, w - 4):
+                center = img[y][x]
+                threshold = self.fast_threshold
+                
+                # Quick test: check positions 1, 5, 9, 13 (cardinal directions)
+                n_bright = 0
+                n_dark = 0
+                for idx in [0, 4, 8, 12]:
+                    dy, dx = self.fast_circle[idx]
+                    val = img[y + dy][x + dx]
+                    if val > center + threshold:
+                        n_bright += 1
+                    elif val < center - threshold:
+                        n_dark += 1
+                
+                # Need at least 3 of 4 to pass quick test
+                if n_bright < 3 and n_dark < 3:
+                    continue
+                
+                # Full segment test: check for 9 contiguous pixels
+                circle_vals = []
+                for dy, dx in self.fast_circle:
+                    circle_vals.append(img[y + dy][x + dx])
+                
+                # Check for 9 contiguous brighter or darker
+                extended = circle_vals + circle_vals[:8]  # wrap around
+                
+                is_corner = False
+                for start in range(16):
+                    bright_count = 0
+                    dark_count = 0
+                    for i in range(9):
+                        val = extended[start + i]
+                        if val > center + threshold:
+                            bright_count += 1
+                        elif val < center - threshold:
+                            dark_count += 1
+                        else:
+                            break
+                    
+                    if bright_count >= 9 or dark_count >= 9:
+                        is_corner = True
+                        break
+                
+                if is_corner:
+                    corners.append({'x': x, 'y': y})
+        
+        return corners
+    
+    # ═══════════════════════════════════════════════════════════════════════════
+    # Step 2: Harris Score for Ranking
+    # ═══════════════════════════════════════════════════════════════════════════
+    
+    def compute_harris_scores(self, img, corners):
+        """
+        Rank corners by Harris response.
+        
+        R = det(M) - k·trace(M)² where M is structure tensor.
+        """
+        h, w = len(img), len(img[0])
+        k = 0.04
+        
+        for corner in corners:
+            x, y = corner['x'], corner['y']
+            
+            # Compute structure tensor in 3×3 window
+            Ixx = Ixy = Iyy = 0
+            
+            for di in range(-1, 2):
+                for dj in range(-1, 2):
+                    ny, nx = y + di, x + dj
+                    if ny < 1 or ny >= h - 1 or nx < 1 or nx >= w - 1:
+                        continue
+                    
+                    Ix = (img[ny][nx + 1] - img[ny][nx - 1]) / 2
+                    Iy = (img[ny + 1][nx] - img[ny - 1][nx]) / 2
+                    
+                    Ixx += Ix * Ix
+                    Ixy += Ix * Iy
+                    Iyy += Iy * Iy
+            
+            det = Ixx * Iyy - Ixy * Ixy
+            trace = Ixx + Iyy
+            R = det - k * trace * trace
+            
+            corner['harris_score'] = R
+        
+        # Sort by Harris score and keep top N
+        corners.sort(key=lambda c: c['harris_score'], reverse=True)
+        return corners[:self.n_keypoints]
+    
+    # ═══════════════════════════════════════════════════════════════════════════
+    # Step 3: Orientation via Intensity Centroid
+    # ═══════════════════════════════════════════════════════════════════════════
+    
+    def compute_orientation(self, img, kp):
+        """
+        Compute keypoint orientation using intensity centroid.
+        
+        θ = atan2(m01, m10) where m10, m01 are image moments.
+        
+        Much faster than SIFT's gradient histogram method.
+        """
+        x, y = kp['x'], kp['y']
+        h, w = len(img), len(img[0])
+        radius = 15
+        
+        m10 = 0
+        m01 = 0
+        
+        for dy in range(-radius, radius + 1):
+            for dx in range(-radius, radius + 1):
+                if dx * dx + dy * dy > radius * radius:
+                    continue
+                
+                ny, nx = y + dy, x + dx
+                if ny < 0 or ny >= h or nx < 0 or nx >= w:
+                    continue
+                
+                intensity = img[ny][nx]
+                m10 += dx * intensity
+                m01 += dy * intensity
+        
+        orientation = math.degrees(math.atan2(m01, m10))
+        return orientation
+    
+    # ═══════════════════════════════════════════════════════════════════════════
+    # Step 4: Rotated BRIEF Descriptor
+    # ═══════════════════════════════════════════════════════════════════════════
+    
+    def compute_rbrief_descriptor(self, img, kp):
+        """
+        Compute rotation-invariant BRIEF descriptor.
+        
+        Each bit = 1 if I(rotated_p1) < I(rotated_p2).
+        Total: 256 bits packed into integers.
+        
+        Matching: Hamming distance = XOR + popcount (~8 ops).
+        """
+        x, y = kp['x'], kp['y']
+        h, w = len(img), len(img[0])
+        theta = math.radians(kp.get('orientation', 0))
+        cos_t = math.cos(theta)
+        sin_t = math.sin(theta)
+        
+        descriptor = 0
+        
+        for i, (p1, p2) in enumerate(self.brief_pairs):
+            # Rotate point pairs by keypoint orientation
+            x1 = int(p1[0] * cos_t - p1[1] * sin_t)
+            y1 = int(p1[0] * sin_t + p1[1] * cos_t)
+            x2 = int(p2[0] * cos_t - p2[1] * sin_t)
+            y2 = int(p2[0] * sin_t + p2[1] * cos_t)
+            
+            nx1, ny1 = x + x1, y + y1
+            nx2, ny2 = x + x2, y + y2
+            
+            # Boundary check
+            if not (0 <= nx1 < w and 0 <= ny1 < h and 
+                    0 <= nx2 < w and 0 <= ny2 < h):
+                continue
+            
+            # Binary test
+            if img[ny1][nx1] < img[ny2][nx2]:
+                descriptor |= (1 << i)
+        
+        return descriptor
+    
+    # ═══════════════════════════════════════════════════════════════════════════
+    # Matching: Hamming Distance
+    # ═══════════════════════════════════════════════════════════════════════════
+    
+    @staticmethod
+    def hamming_distance(d1, d2):
+        """
+        Compute Hamming distance between binary descriptors.
+        
+        Hamming = XOR + popcount
+        ~8 integer operations vs ~385 floating-point for L2.
+        """
+        return bin(d1 ^ d2).count('1')
+    
+    # ═══════════════════════════════════════════════════════════════════════════
+    # Main Pipeline
+    # ═══════════════════════════════════════════════════════════════════════════
+    
+    def detect_and_compute(self, img):
+        """
+        Full ORB pipeline: detect keypoints and compute descriptors.
+        """
+        h, w = len(img), len(img[0])
+        
+        # Step 1: FAST corners
+        corners = self.detect_fast_corners(img)
+        
+        if not corners:
+            return []
+        
+        # Step 2: Harris ranking
+        keypoints = self.compute_harris_scores(img, corners)
+        
+        # Step 3-4: Orientation and rBRIEF for each keypoint
+        for kp in keypoints:
+            kp['orientation'] = self.compute_orientation(img, kp)
+            kp['descriptor'] = self.compute_rbrief_descriptor(img, kp)
+        
+        return keypoints
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# USAGE EXAMPLE
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# Create test image with corner
+test_img = [[128] * 64 for _ in range(64)]
+for i in range(20, 40):
+    for j in range(20, 40):
+        test_img[i][j] = 200
+
+orb = ORB(n_keypoints=100, fast_threshold=15)
+keypoints = orb.detect_and_compute(test_img)
+
+print(f"Found {len(keypoints)} keypoints")
+for kp in keypoints[:3]:
+    print(f"  ({kp['x']}, {kp['y']}) ori={kp.get('orientation', 0):.0f}°")
+
+# Matching example
+if len(keypoints) >= 2:
+    d1 = keypoints[0]['descriptor']
+    d2 = keypoints[1]['descriptor']
+    dist = ORB.hamming_distance(d1, d2)
+    print(f"\nHamming distance between first two: {dist} bits")
+```
+
+---
+
+## 7. References
 
 1. Rublee, E., et al. (2011). "ORB: An efficient alternative to SIFT or SURF." ICCV 2011.
 2. Rosten, E., & Drummond, T. (2006). "Machine learning for high-speed corner detection." ECCV 2006.
